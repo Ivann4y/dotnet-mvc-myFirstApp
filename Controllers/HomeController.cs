@@ -15,18 +15,32 @@ namespace dotnet_mvc_first_app.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView(); // ini About.cshtml tanpa layout
+            }
+
+            return View(); // default pakai _Layout
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView(); // ini About.cshtml tanpa layout
+            }
+
+            return View(); // default pakai _Layout
         }
 
         public IActionResult About()
         {
-            //ViewData["Message"] = "Your application description page.";
-            return View();
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView(); // ini About.cshtml tanpa layout
+            }
+
+            return View(); // default pakai _Layout
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

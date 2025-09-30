@@ -53,6 +53,7 @@
         <main class="app-main">
             @RenderBody()   <!-- tempat konten dari view -->
         </main>
+        @await Html.PartialAsync("_Footer")
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
@@ -84,6 +85,31 @@
               },
             });
           }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tambahkan event listener untuk semua link di navbar / sidebar
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    // Kalau href-nya ada #
+                    if (this.getAttribute('href') === '#' || this.getAttribute('href').startsWith('javascript')) {
+                        return; // biarin default
+                    }
+
+                    e.preventDefault(); // cegah reload full
+
+                    let url = this.getAttribute('href');
+
+                    fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                        .then(res => res.text())
+                        .then(html => {
+                            // Ambil hanya isi body view, bukan layout
+                            document.querySelector('main.app-main').innerHTML = html;
+                        })
+                        .catch(err => console.error(err));
+                });
+            });
         });
     </script>
 </body>

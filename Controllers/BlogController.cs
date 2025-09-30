@@ -7,7 +7,12 @@ namespace dotnet_mvc_first_app.Controllers
         [Route("my-blog")]
         public IActionResult Index()
         {
-            return View();
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView(); // ini About.cshtml tanpa layout
+            }
+
+            return View(); // default pakai _Layout
         }
     }
 }
