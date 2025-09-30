@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Main Sidebar Component | AdminLTE 4</title>
+    <title>@ViewBag.Title | PRG</title>
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -56,61 +56,187 @@
         @await Html.PartialAsync("_Footer")
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
-            crossorigin="anonymous"></script>
-    <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            crossorigin="anonymous"></script>
-    <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
-            crossorigin="anonymous"></script>
-    <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+    <!-- Third Party Plugin(OverlayScrollbars) -->
+    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js" crossorigin="anonymous"></script>
+
+    <!-- Required Plugin(popperjs for Bootstrap 5) -->
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+
+    <!-- Required Plugin(Bootstrap 5) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    <!-- Required Plugin(AdminLTE) -->
     <script src="~/dist/js/adminlte.js"></script>
-    <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+
+    <!-- SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" crossorigin="anonymous"></script>
     <script>
-        const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
-        const Default = {
-          scrollbarTheme: 'os-theme-light',
-          scrollbarAutoHide: 'leave',
-          scrollbarClickScroll: true,
-        };
+        new Sortable(document.querySelector('.connectedSortable'), {
+          group: 'shared',
+          handle: '.card-header',
+        });
+        document.querySelectorAll('.connectedSortable .card-header')
+          .forEach(cardHeader => cardHeader.style.cursor = 'move');
+    </script>
+
+    <!-- OverlayScrollbars Configure -->
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
-          const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+          const sidebarWrapper = document.querySelector('.sidebar-wrapper');
           if (sidebarWrapper && OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined) {
             OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
               scrollbars: {
-                theme: Default.scrollbarTheme,
-                autoHide: Default.scrollbarAutoHide,
-                clickScroll: Default.scrollbarClickScroll,
+                theme: 'os-theme-light',
+                autoHide: 'leave',
+                clickScroll: true,
               },
             });
           }
         });
     </script>
+
+    <!-- ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js" crossorigin="anonymous"></script>
     <script>
+        // Revenue Chart
+        const revenue_chart_options = {
+          series: [
+            { name: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90] },
+            { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] },
+          ],
+          chart: { height: 300, type: 'area', toolbar: { show: false } },
+          legend: { show: false },
+          colors: ['#0d6efd', '#20c997'],
+          dataLabels: { enabled: false },
+          stroke: { curve: 'smooth' },
+          xaxis: {
+            type: 'datetime',
+            categories: [
+              '2023-01-01','2023-02-01','2023-03-01',
+              '2023-04-01','2023-05-01','2023-06-01','2023-07-01'
+            ],
+          },
+          tooltip: { x: { format: 'MMMM yyyy' } },
+        };
+        new ApexCharts(document.querySelector('#revenue-chart'), revenue_chart_options).render();
+
+        // Monthly Sales Chart
+        const monthly_sales_options = {
+          series: [
+            { name: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90] },
+            { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] },
+          ],
+          chart: { height: 180, type: 'area', toolbar: { show: false } },
+          legend: { show: false },
+          colors: ['#0d6efd', '#20c997'],
+          dataLabels: { enabled: false },
+          stroke: { curve: 'smooth' },
+          xaxis: {
+            type: 'datetime',
+            categories: [
+              '2023-01-01','2023-02-01','2023-03-01',
+              '2023-04-01','2023-05-01','2023-06-01','2023-07-01'
+            ],
+          },
+          tooltip: { x: { format: 'MMMM yyyy' } },
+        };
+        new ApexCharts(document.querySelector('#sales-chart'), monthly_sales_options).render();
+
+        // Pie Chart
+        const pie_chart_options = {
+          series: [700, 500, 400, 600, 300, 100],
+          chart: { type: 'donut' },
+          labels: ['Chrome', 'Edge', 'FireFox', 'Safari', 'Opera', 'IE'],
+          dataLabels: { enabled: false },
+          colors: ['#0d6efd', '#20c997', '#ffc107', '#d63384', '#6f42c1', '#adb5bd'],
+        };
+        new ApexCharts(document.querySelector('#pie-chart'), pie_chart_options).render();
+
+        // Visitors Chart
+        const visitors_chart_options = {
+          series: [
+            { name: 'High - 2023', data: [100, 120, 170, 167, 180, 177, 160] },
+            { name: 'Low - 2023', data: [60, 80, 70, 67, 80, 77, 100] },
+          ],
+          chart: { height: 200, type: 'line', toolbar: { show: false } },
+          colors: ['#0d6efd', '#adb5bd'],
+          stroke: { curve: 'smooth' },
+          grid: { borderColor: '#e7e7e7', row: { colors: ['#f3f3f3','transparent'], opacity: 0.5 } },
+          legend: { show: false },
+          markers: { size: 1 },
+          xaxis: { categories: ['22th','23th','24th','25th','26th','27th','28th'] },
+        };
+        new ApexCharts(document.querySelector('#visitors-chart'), visitors_chart_options).render();
+
+        // Bar Sales Chart
+        const bar_sales_options = {
+          series: [
+            { name: 'Net Profit', data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
+            { name: 'Revenue', data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
+            { name: 'Free Cash Flow', data: [35, 41, 36, 26, 45, 48, 52, 53, 41] },
+          ],
+          chart: { type: 'bar', height: 200 },
+          plotOptions: { bar: { horizontal: false, columnWidth: '55%', endingShape: 'rounded' } },
+          legend: { show: false },
+          colors: ['#0d6efd', '#20c997', '#ffc107'],
+          dataLabels: { enabled: false },
+          stroke: { show: true, width: 2, colors: ['transparent'] },
+          xaxis: { categories: ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'] },
+          fill: { opacity: 1 },
+          tooltip: { y: { formatter: val => '$ ' + val + ' thousands' } },
+        };
+        new ApexCharts(document.querySelector('#bar-sales-chart'), bar_sales_options).render();
+    </script>
+
+    <!-- JS Vector Map -->
+    <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js" crossorigin="anonymous"></script>
+    <script>
+        new jsVectorMap({ selector: '#world-map', map: 'world' });
+    </script>
+
+    @* <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Tambahkan event listener untuk semua link di navbar / sidebar
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function (e) {
-                    // Kalau href-nya ada #
-                    if (this.getAttribute('href') === '#' || this.getAttribute('href').startsWith('javascript')) {
-                        return; // biarin default
-                    }
+            document.body.addEventListener('click', function (e) {
+                let link = e.target.closest('.nav-link');
+                if (!link) return;
 
-                    e.preventDefault(); // cegah reload full
+                let href = link.getAttribute('href');
+                if (!href || href === '#' || href.startsWith('javascript')) return;
 
-                    let url = this.getAttribute('href');
+                e.preventDefault();
 
-                    fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                        .then(res => res.text())
-                        .then(html => {
-                            // Ambil hanya isi body view, bukan layout
-                            document.querySelector('main.app-main').innerHTML = html;
-                        })
-                        .catch(err => console.error(err));
-                });
+                fetch(href, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(res => res.text())
+                    .then(html => {
+                        document.querySelector('main.app-main').innerHTML = html;
+
+                        // --- Inisialisasi ulang chart/map/dll setelah partial dimuat ---
+                        if (document.querySelector('#revenue-chart')) {
+                            const revenue_chart_options = {
+                                series: [
+                                    { name: 'Digital Goods', data: [28, 48, 40, 19, 86, 27, 90] },
+                                    { name: 'Electronics', data: [65, 59, 80, 81, 56, 55, 40] }
+                                ],
+                                chart: { height: 300, type: 'area', toolbar: { show: false } },
+                                legend: { show: false },
+                                colors: ['#0d6efd', '#20c997'],
+                                dataLabels: { enabled: false },
+                                stroke: { curve: 'smooth' },
+                                xaxis: { type: 'datetime', categories: ['2023-01-01','2023-02-01','2023-03-01','2023-04-01','2023-05-01','2023-06-01','2023-07-01'] },
+                                tooltip: { x: { format: 'MMMM yyyy' } }
+                            };
+                            new ApexCharts(document.querySelector('#revenue-chart'), revenue_chart_options).render();
+                        }
+
+                        if (document.querySelector('#world-map')) {
+                            new jsVectorMap({ selector: '#world-map', map: 'world' });
+                        }
+                    })
+                    .catch(err => console.error("Fetch error:", err));
             });
         });
-    </script>
+    </script> *@
+
 </body>
 </html>

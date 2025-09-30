@@ -6,12 +6,41 @@ namespace dotnet_mvc_first_app.Controllers
     {
         public IActionResult Index()
         {
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
             {
-                return PartialView(); // ini About.cshtml tanpa layout
+                return RedirectToAction("Login", "Account");
             }
 
-            return View(); // default pakai _Layout
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return PartialView();
+
+            return View();
+        }
+
+        public IActionResult Index2()
+        {
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return PartialView();
+
+            return View();
+        }
+
+        public IActionResult Index3()
+        {
+            if (HttpContext.Session.GetString("IsLoggedIn") != "true")
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                return PartialView();
+
+            return View();
         }
     }
 }
